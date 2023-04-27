@@ -32,4 +32,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Closing Client - EchoServer Connection.")
         client.close()
+    except ConnectionAbortedError:
+        print("Closing Client - Connection Aborted (EchoServer Unavailable).")
+        client.close()
     

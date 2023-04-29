@@ -27,12 +27,16 @@ if __name__ == '__main__':
     client = EchoClient(args.host, args.port)
     try:
         while True:
+            print("Input: ", end="")
             client.send(input())
-            print(client.recv())
+            print("Echo: ", client.recv())
     except KeyboardInterrupt:
         print("Closing Client - EchoServer Connection.")
         client.close()
     except ConnectionAbortedError:
         print("Closing Client - Connection Aborted (EchoServer Unavailable).")
+        client.close()
+    except EOFError:
+        print("Closing Client - EOF (EchoServer Unavailable).")
         client.close()
     

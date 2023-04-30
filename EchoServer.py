@@ -107,7 +107,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Socket Server")
-    parser.add_argument("-h",'--host', action="store", dest="host", required=False, default="localhost")
+    parser.add_argument("-s",'--host', action="store", dest="host", required=False, default="localhost")
     parser.add_argument("-p",'--port', action="store", dest="port", type=int, required=False, default=7777)
     parser.add_argument("-m",'--log_mode', action="store", dest="log_mode", type=lambda x: EchoModeEnum[x], required=False, default=EchoModeEnum.LOG_BOTH, choices=list(EchoModeEnum))
     parser.add_argument("-f",'--log_file', action="store", dest="log_file", required=False, default="EchoServer.log")

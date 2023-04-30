@@ -47,7 +47,7 @@ class EchoClient:
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-h",'--host', help='Host', type=str, default='localhost')
+    parser.add_argument("-s",'--host', help='Host', type=str, default='localhost')
     parser.add_argument("-p",'--port', help='Port', type=int, default=7777)
     args = parser.parse_args()
     client = EchoClient(args.host, args.port)

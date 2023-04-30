@@ -1,0 +1,2 @@
+#EchoServerTest.py requirements:
+pytest == 7.3.1

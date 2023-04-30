@@ -3,6 +3,15 @@ import socket
 import logging
 
 from enum import IntEnum
+import time
+
+'''
+    EchoServer.py
+    Author: Ibraheem Saleh
+    Description: A simple Python EchoServer -- it receives data from a client and echoes it back.
+                    Main function provided for stand-alone use convenience;
+                    EchoServer class can also be imported and used directly in other python applications.
+'''
 
 class EchoModeEnum(IntEnum):
     """An enum for the mode of logging to use.
@@ -45,13 +54,16 @@ class EchoServer:
         self.log_file = log_file
         self.log_level = log_level
         if(self.log_mode == EchoModeEnum.LOG_FILE or self.log_mode == EchoModeEnum.LOG_BOTH):
-            logging.basicConfig(filename=self.log_file, level=self.log_level)
+            logging.basicConfig(filename=self.log_file, level=self.log_level,
+                                format='%(asctime)s.%(msecs)03d::%(levelname)s::%(name)s::%(message)s',
+                                datefmt='%Y-%m-%dT%H:%M:%S')
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.settimeout(0.5) #Needed to support keyboard interrupts
         self.sock.bind((self.host, self.port))
 
-    """Start the server."""
+    """Start the server.
+        :return None"""
     def serve(self):
         self.sock.listen(1)
         self.log("EchoServer Listening on {}:{}".format(self.host, self.port))
@@ -81,7 +93,9 @@ class EchoServer:
             self.log("\nServer closed with KeyboardInterrupt!")
             self.sock.close()
             sys.exit(0)
-    """Log a message. See EchoModeEnum for the log modes that are supported."""
+    """Log a message. See EchoModeEnum for the log modes that are supported.
+    :param message: The message to log.
+    :param args: Other arguments to log. (similar to print)"""
     def log(self, message, *args):
         if(self.log_mode == EchoModeEnum.LOG_CONSOLE or self.log_mode == EchoModeEnum.LOG_BOTH):
             print(message, *args)
@@ -93,11 +107,11 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Socket Server")
-    parser.add_argument('--host', action="store", dest="host", required=False, default="localhost")
-    parser.add_argument('--port', action="store", dest="port", type=int, required=False, default=7777)
-    parser.add_argument('--log_mode', action="store", dest="log_mode", type=lambda x: EchoModeEnum[x], required=False, default=EchoModeEnum.LOG_BOTH, choices=list(EchoModeEnum))
-    parser.add_argument('--log_file', action="store", dest="log_file", required=False, default="EchoServer.log")
-    parser.add_argument('--log_level', action="store", dest="log_level", type=lambda x: x.upper(), required=False, default=logging.DEBUG, choices=list(logging._nameToLevel))
+    parser.add_argument("-h",'--host', action="store", dest="host", required=False, default="localhost")
+    parser.add_argument("-p",'--port', action="store", dest="port", type=int, required=False, default=7777)
+    parser.add_argument("-m",'--log_mode', action="store", dest="log_mode", type=lambda x: EchoModeEnum[x], required=False, default=EchoModeEnum.LOG_BOTH, choices=list(EchoModeEnum))
+    parser.add_argument("-f",'--log_file', action="store", dest="log_file", required=False, default="EchoServer.log")
+    parser.add_argument("-l",'--log_level', action="store", dest="log_level", type=lambda x: x.upper(), required=False, default="DEBUG", choices=list(logging._nameToLevel))
     args = parser.parse_args()
     port = args.port
     host = args.host

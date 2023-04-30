@@ -16,18 +16,18 @@ import time
 class EchoModeEnum(IntEnum):
     """An enum for the mode of logging to use.
 
-    :description: The log_mode can be one of the following: LOG_CONSOLE, LOG_FILE, LOG_BOTH
-                     LOG_CONSOLE: Log to the console.
-                     LOG_FILE: Log to a file.
-                     LOG_BOTH: Log to both the console and file.
+    :description: The log_mode can be one of the following: LOG_CONSOLE, LOG_FILE, LOG_BOTH\n
+                     LOG_CONSOLE: Log to the console.\n
+                     LOG_FILE: Log to a file.\n
+                     LOG_BOTH: Log to both the console and file.\n
 
     """
     LOG_CONSOLE = 0
     LOG_FILE  = 1
     LOG_BOTH  = 2
 
-    """Define the string representation of the enum for use in the arg parser. """
     def __str__(self):
+        """Define the string representation of the enum for use in the arg parser. """
         return self.name
 
 class EchoServer:
@@ -40,11 +40,10 @@ class EchoServer:
     :param log_mode: The type of log to use.
     :type log_mode: EchoModeEnum
     :param log_file: The file to log to.
-    :param log_file: The file to log to.
     :type log_file: str
     :param log_level: The level of log to use.
     :type log_level: int
-    :description: The log_mode can be one of the following: logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL
+    :description: A simple EchoServer implementation. The log_mode can be one of the following: logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL
 
     """
     def __init__(self, host="localhost", port=7777,log_mode=EchoModeEnum.LOG_BOTH, log_file="EchoServer.log", log_level=logging.DEBUG):
@@ -62,9 +61,10 @@ class EchoServer:
         self.sock.settimeout(0.5) #Needed to support keyboard interrupts
         self.sock.bind((self.host, self.port))
 
-    """Start the server.
-        :return None"""
     def serve(self):
+        """Start the server.
+        :return None"""
+
         self.sock.listen(1)
         self.log("EchoServer Listening on {}:{}".format(self.host, self.port))
         try:
@@ -93,10 +93,12 @@ class EchoServer:
             self.log("Server closed with KeyboardInterrupt!")
             self.sock.close()
             sys.exit(0)
-    """Log a message. See EchoModeEnum for the log modes that are supported.
-    :param message: The message to log.
-    :param args: Other arguments to log. (similar to print)"""
     def log(self, message, *args):
+        """Log a message. See EchoModeEnum for the log modes that are supported.
+            :param message: The message to log.
+            :param args: Other arguments to log. (similar to print)
+            :return None"""
+
         if(self.log_mode == EchoModeEnum.LOG_CONSOLE or self.log_mode == EchoModeEnum.LOG_BOTH):
             print(message, *args)
         if(self.log_mode == EchoModeEnum.LOG_FILE or self.log_mode == EchoModeEnum.LOG_BOTH):

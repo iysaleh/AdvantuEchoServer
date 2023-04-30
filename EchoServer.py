@@ -90,7 +90,7 @@ class EchoServer:
                 except KeyboardInterrupt:
                     raise KeyboardInterrupt
         except KeyboardInterrupt:
-            self.log("\nServer closed with KeyboardInterrupt!")
+            self.log("Server closed with KeyboardInterrupt!")
             self.sock.close()
             sys.exit(0)
     """Log a message. See EchoModeEnum for the log modes that are supported.
